@@ -40,7 +40,7 @@ const posts = [
         "media": "https://unsplash.it/600/400?image=24",
         "author": {
             "name": "Luca Formicola",
-            "image": null
+            "image": "https://unsplash.it/600/400?image=25"
         },
         "likes": 56,
         "created": "2021-04-03"
@@ -69,11 +69,11 @@ posts.forEach((elem) => {
         <div class="post__header">
             <div class="post-meta">                    
                 <div class="post-meta__icon">
-                    <img class="profile-pic" src=${elem.author.image} alt="Phil Mangione">                    
+                    <img class="profile-pic" src=${elem.author.image} alt="Phil Mangione">                  
                 </div>
                 <div class="post-meta__data">
-                    <div class="post-meta__author">Phil Mangione</div>
-                    <div class="post-meta__time">${elem.created} fa</div>
+                    <div class="post-meta__author">${elem.author.name}</div>
+                    <div class="post-meta__time">${elem.created}</div>
                 </div>                    
             </div>
         </div>
@@ -84,13 +84,13 @@ posts.forEach((elem) => {
         <div class="post__footer">
             <div class="likes js-likes">
                 <div class="likes__cta">
-                    <a class="like-button  js-like-button" href="#" data-postid="1">
+                    <a class="like-button  js-like-button" href="#" data-postid="${elem.id}">
                         <i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
                         <span class="like-button__label">Mi Piace</span>
                     </a>
                 </div>
                 <div class="likes__counter">
-                    Piace a ${elem.likes} persone
+                    Piace a <b id="like-counter-${elem.id}" class="js-likes-counter">${elem.likes}</b> persone
                 </div>
             </div> 
         </div>            
@@ -99,3 +99,42 @@ posts.forEach((elem) => {
 
 const itemContainer = document.getElementById('container');
 itemContainer.innerHTML = itemContents;
+
+// MILESTONE 3 e BONUS 3
+
+const miPiace = document.getElementsByClassName('js-like-button')
+const arrayLike = [];
+
+for(let i=0; i<miPiace.length; i++){
+    miPiace[i].addEventListener('click', function(){
+        const postId = this.dataset.postid;
+        const likes = document.getElementById(`like-counter-${postId}`)
+
+        const likesNumber = parseInt(likes.innerText)
+
+        if(arrayLike.includes(postId)){
+            likes.innerText = likesNumber-1;
+
+            const index = arrayLike.indexOf(postId);
+            if(index > -1){
+                arrayLike.splice(index,1);
+            }
+            miPiace[i].classList.remove("like-button--liked");
+            console.log(arrayLike);
+        }else{
+            likes.innerText = likesNumber+1;
+            arrayLike.push(postId);
+            console.log(arrayLike);
+            miPiace[i].classList.add("like-button--liked");
+        }
+        
+        // Solo incremento +1 di like
+
+        // likes.innerText = likesNumber+1;
+        // console.log(likesNumber);
+    })
+}
+
+
+
+
