@@ -106,11 +106,16 @@ const miPiace = document.getElementsByClassName('js-like-button')
 const arrayLike = [];
 
 for(let i=0; i<miPiace.length; i++){
-    miPiace[i].addEventListener('click', function(){
+    miPiace[i].addEventListener('click', function(e){
+        //funzione per non far tornare su la pagina al click del like
+        e.preventDefault();
+        // dataset
         const postId = this.dataset.postid;
         const likes = document.getElementById(`like-counter-${postId}`)
 
         const likesNumber = parseInt(likes.innerText)
+
+        // per mettere e togliere il like
 
         if(arrayLike.includes(postId)){
             likes.innerText = likesNumber-1;
