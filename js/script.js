@@ -40,7 +40,7 @@ const posts = [
         "media": "https://unsplash.it/600/400?image=24",
         "author": {
             "name": "Luca Formicola",
-            "image": "https://unsplash.it/600/400?image=25"
+            "image": null,
         },
         "likes": 56,
         "created": "2021-04-03"
@@ -69,11 +69,11 @@ posts.forEach((elem) => {
         <div class="post__header">
             <div class="post-meta">                    
                 <div class="post-meta__icon">
-                    <img class="profile-pic" src=${elem.author.image} alt="Phil Mangione">                  
+                    ${elem.author.image ? profileImageTemplate(elem.author) : profileImageDefaultTemplate(elem.author)}
                 </div>
                 <div class="post-meta__data">
                     <div class="post-meta__author">${elem.author.name}</div>
-                    <div class="post-meta__time">${elem.created}</div>
+                    <div class="post-meta__time">${formatDate(elem.created)}</div>
                 </div>                    
             </div>
         </div>
@@ -99,6 +99,45 @@ posts.forEach((elem) => {
 
 const itemContainer = document.getElementById('container');
 itemContainer.innerHTML = itemContents;
+
+// BONUS 1
+
+function formatDate(dateStr){
+    return dateStr.split('-').reverse().join('/');
+}
+
+// BONUS 2
+
+// funzione per stampare immagine di profilo
+
+function profileImageTemplate (userData){
+    const {name, image} = userData;
+    return `<img class="profile-pic" src="${image}" alt="${name}">`;
+}
+
+// funzione per iniziali del nome per immagine di profilo
+
+function profileImageDefaultTemplate (userData){
+    const {name} = userData;
+
+    // ricaviamo le iniziali del nome e cognome
+
+    const nameParts = name.split(' ');
+    
+    const letters = [];
+    for(let i=0; i < nameParts.length; i++){
+        const namePart = nameParts[i];
+        const initialLetter = namePart[0]; // oppure namePart.charAt(0);
+        letters.push(initialLetter);
+    }
+
+    const initials = letters.join('');
+    return `
+        <div class="profile-pic-default">
+            <span>${initials}</span>
+        </div>
+    `
+}
 
 // MILESTONE 3 e BONUS 3
 
@@ -139,7 +178,4 @@ for(let i=0; i<miPiace.length; i++){
         // console.log(likesNumber);
     })
 }
-
-
-
 
